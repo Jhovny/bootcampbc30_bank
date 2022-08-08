@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 
 
 @Builder
@@ -16,8 +17,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection="client")
 public class Client {
-    
+
     private String id_client;
     private String type_client;
+
+    private List<Product> Products;
 
 }
