@@ -3,10 +3,12 @@ package com.bootcamp.bank.web.controller;
 
 import com.bootcamp.bank.domain.dto.account.AccountOpenRequest;
 import com.bootcamp.bank.domain.dto.account.AccountOpenResponse;
+import com.bootcamp.bank.domain.dto.client.ClientApiResponse;
 import com.bootcamp.bank.domain.dto.purchase.PayCreditRequest;
 import com.bootcamp.bank.domain.dto.purchase.PayCreditResponse;
 import com.bootcamp.bank.domain.dto.purchase.PurchaseConsumptionCreditRequest;
 import com.bootcamp.bank.domain.dto.purchase.PurchaseConsumptionCreditResponse;
+import com.bootcamp.bank.domain.service.ClientApiService;
 import com.bootcamp.bank.persistence.ProductRepository;
 import com.bootcamp.bank.persistence.entity.Operation;
 import com.bootcamp.bank.persistence.entity.Product;
@@ -31,6 +33,9 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ClientApiService clientApiService;
+
     @GetMapping()
     public   Flux<Product>  getAll(){
 
@@ -42,6 +47,11 @@ public class ProductController {
 
     @PostMapping("/account-open")
     public Flux<ResponseEntity<AccountOpenResponse>> payCredit(@RequestBody AccountOpenRequest request) {
+
+
+        ClientApiResponse clientApiResponse=clientApiService.getClient(request.getClient().getIdClient());
+
+
 
         AccountOpenResponse response = new AccountOpenResponse();
 
@@ -198,6 +208,10 @@ public class ProductController {
 
     @GetMapping("/checkBalance/{id}")
     public float CheckBalance(@PathVariable String id){
+
+
+
+
         Flux<Product> productos = productRepository.getByNumberAccount(id);
         Product producto = productos.blockFirst();
         return producto.getBalance();
